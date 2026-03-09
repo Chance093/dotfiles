@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+DOTFILES_REPO="dotfiles"
 BREW_PACKAGE_FILE="packages/brew.txt"
 
 install_macos() {
@@ -30,5 +31,12 @@ install_macos() {
   # Copy secrets.example.sh => secrets.sh if it doesn't exist
   # Print a summary of what has been done
 }
+
+# check if we are running script in dotfiles repo
+CURRENT_DIR_NAME=$(basename "$PWD")
+if [[ "$CURRENT_DIR_NAME" != "$DOTFILES_REPO" ]]; then
+  echo "Error: Must run script from dotfiles repo" >&2
+  exit 1
+fi
 
 install_macos
