@@ -28,6 +28,8 @@ install_macos() {
     exit 1
   fi
 
+  mkdir -p "$HOME/.local/bin" # create local bin directory for custom scripts
+
   # Create symlinks
   local symlinks=(
     "$(pwd)/config/nvim:$HOME/.config/nvim"
@@ -37,6 +39,7 @@ install_macos() {
     "$(pwd)/zsh/.zshrc:$HOME/.zshrc"
     "$(pwd)/zsh/.alias.zsh:$HOME/.alias.zsh"
     "$(pwd)/zsh/.export.zsh:$HOME/.export.zsh"
+    "$(pwd)/scripts/devlogs:$HOME/.local/bin/devlogs"
   )
 
   for entry in "${symlinks[@]}"; do

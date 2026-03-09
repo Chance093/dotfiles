@@ -1,0 +1,92 @@
+#!/bin/bash
+
+PARENT_REPO=~/github.com/Chance093
+DEVLOGS_REPO="$PARENT_REPO/devlogs"
+CLONE_URL="git@github.com:Chance093/devlogs.git"
+
+# declare month map
+keys=(jan feb mar apr may jun jul aug sep oct nov dec)
+vals=(1 2 3 4 5 6 7 8 9 10 11 12)
+
+get_month() {
+  local search="$1"
+  for i in "${!keys[@]}"; do
+    if [[ "${keys[i]}" == "$search" ]]; then
+      printf '%s\n' "${vals[i]}"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# if not exactly 1 arg, exit
+if [ -n "$1" ]; then
+  :
+else  
+  echo "[ERROR] - You must provide a message as an argument"
+  exit 1
+fi 
+
+if [ $# -gt 1 ]; then
+  echo "[ERROR] - You must only provide one argument"
+  exit 1
+fi
+
+# if repo does not exist, pull from github
+if [ -d "$DEVLOGS_REPO" ]; then
+  echo "Pulling GitHub repo $CLONE_URL..."
+  cd $DEVLOGS_REPO
+
+  echo "Successfully pulled repo"
+else
+  echo "Cloning GitHub repo $CLONE_URL..."
+  cd $PARENT_REPO
+  git clone $CLONE_URL > /dev/null
+  echo "Successfully cloned repo"
+fi
+
+# Get time and date
+read weekday month day time tz year <<< `date`
+
+# Format variables
+log_message="[$time] - $1"
+lower_weekday=$(printf '%s' "$weekday" | tr '[:upper:]' '[:lower:]')
+lower_month=$(printf '%s' "$month" | tr '[:upper:]' '[:lower:]')
+file_name="$(get_month $lower_month)-${day}-${year}.txt"
+year_dir="$DEVLOGS_REPO/${year}"
+month_dir="$year_dir/${lower_month}"
+path_to_file="$month_dir/${file_name}"
+
+# check if year dir exists
+if [ -d "$year_dir" ]; then
+  :
+else
+  mkdir "$year_dir"
+  echo "Created year directory $year"
+fi
+
+# check if month dir exists
+if [ -d "$month_dir" ]; then
+  :
+else 
+  mkdir "$month_dir"
+  echo "Created month directory $lower_month"
+fi
+
+# append message to file
+if [ -f "$path_to_file" ]; then
+  echo $log_message >> $path_to_file
+else
+  echo $log_message > $path_to_file
+  echo "Created file ${file_name}"
+fi
+
+echo "" >> $path_to_file
+
+# Push changes to github
+echo "Pushing log to GitHub repo $CLONE_URL..."
+git add . > /dev/null
+git commit -m "add log through CLI" > /dev/null
+git push origin main > /dev/null
+
+echo "Successfully logged message"
