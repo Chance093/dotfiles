@@ -11,14 +11,16 @@ install_macos() {
   fi
 
   # install homebrew
-  if [[ "$(brew --version)" == *"command not found"* ]]; then
+  if ! command -v brew &>/dev/null; then
     echo "Installing homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
 
   # install packages in brew.txt
   if [[ -f "$BREW_PACKAGE_FILE" ]]; then
     while IFS= read -r line <&3; do
+      [[ -z "$line" || "$line" == \#* ]] && continue # skip blank lines and commented lines
       brew install "$line"
     done 3<"$BREW_PACKAGE_FILE"
   else
@@ -27,20 +29,29 @@ install_macos() {
   fi
 
   # Create symlinks
-  ln -sf "$(PWD)/config/nvim" ~/.config/nvim
-  ln -sf "$(PWD)/config/tmux/.tmux.conf" ~/.tmux.conf
-  ln -sf "$(PWD)/config/ghostty/config" ~/Library/Application\ Support/com.mitchellh.ghostty/config
-  ln -sf "$(PWD)/config/ohmyposh/ohmyposh.theme.json" ~/.config/ohmyposh.theme.json
+  local symlinks=(
+    "$(pwd)/config/nvim:$HOME/.config/nvim"
+    "$(pwd)/config/tmux/.tmux.conf:$HOME/.tmux.conf"
+    "$(pwd)/config/ghostty/config:$HOME/Library/Application Support/com.mitchellh.ghostty/config"
+    "$(pwd)/config/ohmyposh/ohmyposh.theme.json:$HOME/.config/ohmyposh.theme.json"
+    "$(pwd)/zsh/.zshrc:$HOME/.zshrc"
+    "$(pwd)/zsh/.alias.zsh:$HOME/.alias.zsh"
+    "$(pwd)/zsh/.export.zsh:$HOME/.export.zsh"
+  )
 
-  ln -sf "$(PWD)/zsh/.zshrc" ~/.zshrc
-  ln -sf "$(PWD)/zsh/.alias.zsh" ~/.alias.zsh
-  ln -sf "$(PWD)/zsh/.export.zsh" ~/.export.zsh
+  for entry in "${symlinks[@]}"; do
+    local src="${entry%%:*}"
+    local dest="${entry##*:}"
+    ln -sf "$src" "$dest"
+    echo "Symlinked $dest -> $src"
+  done
 
-  # Open nvim headlessly so lazy.nvim installs all plugins
+  # Bootstrap Neovim plugins
   nvim --headless "+Lazy! sync" +qa
 
-  # Print a summary of what has been done
-  echo "Successfully installed packages, created symlinks, and initialized neovim"
+  # Success
+  echo ""
+  echo "Done! All packages installed, symlinks created, and Neovim initialized."
 }
 
 # check if we are running script in dotfiles repo
