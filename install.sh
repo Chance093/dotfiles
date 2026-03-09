@@ -27,10 +27,10 @@ install_macos() {
   fi
 
   # Create symlinks
-  ln -sf config/nvim ~/.config/nvim
-  ln -sf config/tmux/.tmux.conf ~/.tmux.conf
-  ln -sf config/ghostty/config ~/Library/Application\ Support/com.mitchellh.ghostty/config
-  ln -sf config/ohmyposh/ohmyposh.theme.json ~/.config/ohmyposh.theme.json
+  ln -sf "$(PWD)/config/nvim" ~/.config/nvim
+  ln -sf "$(PWD)/config/tmux/.tmux.conf" ~/.tmux.conf
+  ln -sf "$(PWD)/config/ghostty/config" ~/Library/Application\ Support/com.mitchellh.ghostty/config
+  ln -sf "$(PWD)/config/ohmyposh/ohmyposh.theme.json" ~/.config/ohmyposh.theme.json
 
   # Open nvim headlessly so lazy.nvim installs all plugins
   # Copy secrets.example.sh => secrets.sh if it doesn't exist
