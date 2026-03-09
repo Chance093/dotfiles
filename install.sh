@@ -32,6 +32,10 @@ install_macos() {
   ln -sf "$(PWD)/config/ghostty/config" ~/Library/Application\ Support/com.mitchellh.ghostty/config
   ln -sf "$(PWD)/config/ohmyposh/ohmyposh.theme.json" ~/.config/ohmyposh.theme.json
 
+  ln -sf "$(PWD)/zsh/.zshrc" ~/.zshrc
+  ln -sf "$(PWD)/zsh/.alias.zsh" ~/.alias.zsh
+  ln -sf "$(PWD)/zsh/.export.zsh" ~/.export.zsh
+
   # Open nvim headlessly so lazy.nvim installs all plugins
   # Copy secrets.example.sh => secrets.sh if it doesn't exist
   # Print a summary of what has been done
