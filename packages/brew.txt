@@ -1,0 +1,12 @@
+go
+neofetch
+neovim
+node
+jandedobbeleer/oh-my-posh/oh-my-posh
+opencode
+python
+ripgrep
+sqlite
+tldr
+tmux
+tree-sitter
