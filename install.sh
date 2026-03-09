@@ -37,8 +37,10 @@ install_macos() {
   ln -sf "$(PWD)/zsh/.export.zsh" ~/.export.zsh
 
   # Open nvim headlessly so lazy.nvim installs all plugins
-  # Copy secrets.example.sh => secrets.sh if it doesn't exist
+  nvim --headless "+Lazy! sync" +qa
+
   # Print a summary of what has been done
+  echo "Successfully installed packages, created symlinks, and initialized neovim"
 }
 
 # check if we are running script in dotfiles repo
