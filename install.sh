@@ -30,6 +30,14 @@ install_macos() {
 
   mkdir -p "$HOME/.local/bin" # create local bin directory for custom scripts
 
+  # Install tmuxifier
+  if [[ ! -d "$HOME/.tmuxifier" ]]; then
+    echo "Installing tmuxifier..."
+    git clone https://github.com/jimeh/tmuxifier.git "$HOME/.tmuxifier"
+  else
+    echo "tmuxifier already installed, skipping..."
+  fi
+
   # Create symlinks
   local symlinks=(
     "$(pwd)/config/nvim:$HOME/.config/nvim"
@@ -40,6 +48,7 @@ install_macos() {
     "$(pwd)/zsh/.alias.zsh:$HOME/.alias.zsh"
     "$(pwd)/zsh/.export.zsh:$HOME/.export.zsh"
     "$(pwd)/scripts/devlogs:$HOME/.local/bin/devlogs"
+    "$(pwd)/scripts/tmux-launcher:$HOME/.local/bin/tmux-launcher"
   )
 
   for entry in "${symlinks[@]}"; do

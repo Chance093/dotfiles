@@ -1,3 +1,4 @@
+fzf
 go
 neofetch
 neovim

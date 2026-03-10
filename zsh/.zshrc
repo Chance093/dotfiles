@@ -7,3 +7,9 @@ if [ -f '/Users/chance/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . 
 
 source ~/.alias.zsh
 source ~/.export.zsh
+
+# Initialize tmuxifier
+eval "$(tmuxifier init -)"
+
+# Tmux launcher keybinding (Ctrl+f)
+bindkey -s ^f "tmux-launcher\n"

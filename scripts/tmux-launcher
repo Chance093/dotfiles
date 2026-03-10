@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+# Tmux Launcher - Quick session selector with fzf integration
+# This script allows you to quickly select and load tmuxifier sessions
+
+# Check if fzf is installed
+if ! command -v fzf &> /dev/null; then
+    echo "Error: fzf is not installed. Please install it with: brew install fzf"
+    exit 1
+fi
+
+# Check if tmuxifier is available
+if ! command -v tmuxifier &> /dev/null; then
+    echo "Error: tmuxifier is not found. Make sure it's in your PATH."
+    exit 1
+fi
+
+# Get list of available tmuxifier sessions
+LAYOUT_PATH="${TMUXIFIER_LAYOUT_PATH:-$HOME/.tmuxifier/layouts}"
+
+# Find all session layout files
+sessions=$(find "$LAYOUT_PATH" -name "*.session.sh" -type f 2>/dev/null | \
+    sed 's|.*/||' | \
+    sed 's|.session.sh||' | \
+    sort)
+
+# If no sessions found, show error
+if [ -z "$sessions" ]; then
+    echo "No tmuxifier session layouts found in: $LAYOUT_PATH"
+    echo "Create a new session with: tmuxifier new-session <name>"
+    exit 1
+fi
+
+# Use fzf to select a session
+selected=$(echo "$sessions" | fzf \
+    --height=40% \
+    --reverse \
+    --border \
+    --prompt="Select tmux session: " \
+    --preview="cat $LAYOUT_PATH/{}.session.sh" \
+    --preview-window=right:60%:wrap)
+
+# If nothing selected (user cancelled), exit
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+# Check if we're already in tmux
+if [ -n "$TMUX" ]; then
+    # Inside tmux - check if session exists
+    if ! tmux has-session -t="$selected" 2>/dev/null; then
+        # Session doesn't exist, create it in detached mode
+        # Unset TMUX temporarily so tmuxifier creates a detached session
+        TMUX= tmuxifier load-session "$selected" 2>/dev/null &
+        
+        # Wait for session to be created (max 2 seconds)
+        for i in {1..20}; do
+            if tmux has-session -t="$selected" 2>/dev/null; then
+                break
+            fi
+            sleep 0.1
+        done
+    fi
+    
+    # Now switch to the session (whether it existed or was just created)
+    tmux switch-client -t "$selected"
+else
+    # Outside tmux - check if session exists
+    if tmux has-session -t="$selected" 2>/dev/null; then
+        # Session exists, attach to it
+        tmux attach-session -t "$selected"
+    else
+        # Session doesn't exist, load it (will create and attach)
+        tmuxifier load-session "$selected"
+    fi
+fi
