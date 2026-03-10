@@ -3,6 +3,9 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 	},
 	{
+		"hrsh7th/cmp-buffer",
+	},
+	{
 		"L3MON4D3/LuaSnip",
 		dependencies = {
 			"saadparwaiz1/cmp_luasnip",
@@ -25,15 +28,15 @@ return {
 					completion = cmp.config.window.bordered(),
 					documentation = cmp.config.window.bordered(),
 				},
-				mapping = cmp.mapping.preset.insert({
-					["<C-b>"] = cmp.mapping.scroll_docs(-4),
-					["<C-f>"] = cmp.mapping.scroll_docs(4),
-					["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-					["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-					["<C-Space>"] = cmp.mapping.complete(),
-					["<C-e>"] = cmp.mapping.abort(),
-					["<CR>"] = cmp.mapping.confirm({ select = true }),
-				}),
+			mapping = cmp.mapping.preset.insert({
+				["<C-b>"] = cmp.mapping.scroll_docs(-4),
+				["<C-f>"] = cmp.mapping.scroll_docs(4),
+				["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+				["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+				["<C-Space>"] = cmp.mapping.complete(),
+				["<C-e>"] = cmp.mapping.abort(),
+				["<CR>"] = cmp.mapping.confirm({ select = false }),
+			}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },

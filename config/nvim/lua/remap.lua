@@ -15,11 +15,12 @@ vim.keymap.set("n", "<C-j>", "<cmd>wincmd j<CR>", { desc = "Move to window below
 vim.keymap.set("n", "<C-l>", "<cmd>wincmd l<CR>", { desc = "Move to window right" })
 
 vim.keymap.set("x", "<leader>p", '"_dp', { desc = "Paste without yanking" })
+vim.keymap.set("v", "p", '"_dP', { desc = "Paste without yanking" })
 
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to system clipboard" })
 vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank line to system clipboard" })
 
 vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Replace word under cursor" })
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make file executable" })
