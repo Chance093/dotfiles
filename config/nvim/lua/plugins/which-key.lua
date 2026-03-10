@@ -10,12 +10,17 @@ return {
 		local wk = require("which-key")
 		wk.setup(opts)
 
-		-- Add group labels for better organization
+		-- Add group labels and icons for better organization
 		wk.add({
-			{ "<leader>f", group = "Find" },
-			{ "<leader>g", group = "Git" },
-			{ "<leader>x", group = "Diagnostics" },
-			{ "<leader>c", group = "Code" },
+			{ "<leader>f", group = "Find", icon = { icon = "󰈞 ", color = "blue" } },
+			{ "<leader>g", group = "Git", icon = { icon = "󰊢 ", color = "orange" } },
+			{ "<leader>h", group = "Harpoon", icon = { icon = "󰀱 ", color = "cyan" } },
+			{ "<leader>x", group = "Diagnostics", icon = { icon = "󱖫 ", color = "red" } },
+			{ "<leader>c", group = "Code", icon = { icon = "󰅩 ", color = "purple" } },
+			{ "<leader>-", icon = { icon = "󰉋 ", color = "yellow" } },
+			{ "<leader>s", icon = { icon = "󰛔 ", color = "cyan" } },
+			{ "<leader>y", icon = { icon = "󰅇 ", color = "green" } },
+			{ "<leader>Y", icon = { icon = "󰅇 ", color = "green" } },
 		})
 	end,
 }
