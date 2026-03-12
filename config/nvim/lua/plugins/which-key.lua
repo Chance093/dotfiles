@@ -17,6 +17,7 @@ return {
 			{ "<leader>h", group = "Harpoon", icon = { icon = "󰀱 ", color = "cyan" } },
 			{ "<leader>x", group = "Diagnostics", icon = { icon = "󱖫 ", color = "red" } },
 			{ "<leader>c", group = "Code", icon = { icon = "󰅩 ", color = "purple" } },
+			{ "<leader>o", group = "OpenCode", icon = { icon = "󰧑 ", color = "azure" } },
 			{ "<leader>-", icon = { icon = "󰉋 ", color = "yellow" } },
 			{ "<leader>s", icon = { icon = "󰛔 ", color = "cyan" } },
 			{ "<leader>y", icon = { icon = "󰅇 ", color = "green" } },
