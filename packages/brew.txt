@@ -11,4 +11,5 @@ sqlite
 tldr
 tmux
 tree-sitter
+tree-sitter-cli
 lsd

@@ -53,7 +53,7 @@ local fifth_gear_luffy = {
 return {
   'goolord/alpha-nvim',
   dependencies = {
-    "echasnovski/mini.icons"
+    { "echasnovski/mini.icons", opts = {} }
   },
   config = function()
     local alpha = require("alpha")
